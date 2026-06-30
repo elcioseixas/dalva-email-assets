@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Minha Estrela Dalva · Teaser da Proposta (78s)</title>
+<!-- VIDEO-TEASER da proposta enxuta · motion deck em 10 cenas · 1920x1080 · 78s
+     Roda em tempo real no navegador (clique para iniciar; espaço pausa; R reinicia; setas avançam/voltam 5s).
+     Mesmo arquivo serve de fonte para renderizar o MP4 (ver video_teaser_render/README_RENDER.md). -->
+<style>
+/* Fontes embutidas do design system canônico */
+@font-face{font-family:'Limelight';font-style:normal;font-weight:400;src:url('design-system/fonts/limelight-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:400;src:url('design-system/fonts/cormorant-garamond-latin-400-italic.woff2') format('woff2');}
+@font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:600;src:url('design-system/fonts/cormorant-garamond-latin-600-italic.woff2') format('woff2');}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400;src:url('design-system/fonts/inter-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'Inter';font-style:normal;font-weight:500;src:url('design-system/fonts/inter-latin-500-normal.woff2') format('woff2');}
+@font-face{font-family:'Inter';font-style:normal;font-weight:600;src:url('design-system/fonts/inter-latin-600-normal.woff2') format('woff2');}
+@font-face{font-family:'Inter';font-style:normal;font-weight:700;src:url('design-system/fonts/inter-latin-700-normal.woff2') format('woff2');}
+
+:root{
+  --bg:#0038A8; --bg-deep:#002766; --surface:#F9DD16;
+  --fg:#FFFFFF; --fg-strong:#FFFFFF; --muted:#C9D6F0;
+  --accent:#F9DD16; --accent-dim:#E7C200; --on-yellow:#002766;
+  --rule:rgba(249,221,22,.45); --rule-soft:rgba(249,221,22,.20);
+  --fd:'Limelight',Georgia,serif; --fi:'Cormorant Garamond',Georgia,serif; --fb:'Inter',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{background:#000;width:100%;height:100%;overflow:hidden;cursor:pointer;}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;background:var(--bg);
+  transform-origin:center;transform:translate(-50%,-50%) scale(1);}
+
+.scene{position:absolute;inset:0;opacity:0;visibility:hidden;background:var(--bg);overflow:hidden;}
+.bgimg{position:absolute;left:-6%;top:-6%;width:112%;height:112%;background:#000 center/cover no-repeat;will-change:transform;}
+.scrim{position:absolute;inset:0;}
+[data-in]{opacity:0;will-change:transform,opacity;}
+
+.kicker{font-family:var(--fd);font-size:23px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);text-shadow:0 2px 12px rgba(0,0,0,.8);}
+.kline{display:flex;justify-content:space-between;position:absolute;left:110px;right:110px;top:64px;z-index:6;}
+h2.hl{font-family:var(--fd);font-weight:400;color:var(--fg-strong);font-size:82px;line-height:1.04;letter-spacing:.012em;text-shadow:0 4px 22px rgba(0,0,0,.6);}
+h2.hl .gold{color:var(--accent);}
+.sub{font-family:var(--fi);font-style:italic;font-size:40px;color:var(--fg);line-height:1.25;text-shadow:0 2px 14px rgba(0,0,0,.7);}
+.lede{font-family:var(--fb);font-weight:400;font-size:27px;line-height:1.55;color:var(--fg);max-width:980px;text-shadow:0 2px 10px rgba(0,0,0,.6);}
+.lede strong{color:var(--fg-strong);font-weight:600;}
+.grule{height:1px;background:var(--accent);width:120px;}
+
+.statrow{display:flex;gap:34px;}
+.stat{flex:1;border:1px solid var(--rule);background:rgba(15,42,74,.55);padding:34px 38px 30px;backdrop-filter:blur(2px);}
+.stat .lbl{font-family:var(--fb);font-weight:700;font-size:18px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;}
+.stat h3{font-family:var(--fd);font-weight:400;font-size:92px;line-height:1.05;color:var(--fg-strong);margin:14px 0 10px;}
+.stat p{font-family:var(--fb);font-size:20px;line-height:1.45;color:var(--muted);}
+
+.panel3{display:flex;gap:30px;}
+.panel{flex:1;background:rgba(15,42,74,.78);border-top:2px solid var(--accent);padding:30px 34px;}
+.panel .lbl{font-family:var(--fb);font-weight:700;font-size:17px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;}
+.panel h3{font-family:var(--fi);font-style:italic;font-size:36px;color:var(--fg-strong);margin:10px 0 12px;}
+.panel p{font-family:var(--fb);font-size:20px;line-height:1.5;color:var(--fg);}
+.panel p strong{color:var(--accent);}
+
+.quote{font-family:var(--fi);font-style:italic;font-size:46px;line-height:1.3;color:var(--fg-strong);text-shadow:0 2px 16px rgba(0,0,0,.8);}
+.att{font-family:var(--fd);font-size:21px;letter-spacing:.28em;color:var(--accent);margin-top:18px;}
+
+.footband{font-family:var(--fb);font-weight:600;font-size:21px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);border-top:1px solid var(--rule);padding-top:18px;}
+.footband .sub2{display:block;font-weight:400;font-size:17px;letter-spacing:.08em;color:var(--muted);margin-top:6px;text-transform:none;}
+
+/* chrome fixo */
+#grain{position:absolute;inset:0;z-index:90;pointer-events:none;opacity:.16;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .32 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");}
+#vig{position:absolute;inset:0;z-index:91;pointer-events:none;background:radial-gradient(120% 90% at 50% 46%,transparent 58%,rgba(0,0,0,.38) 100%);}
+#stars{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:.6;background:
+ radial-gradient(2px 2px at 14% 18%,#E8D9B8 30%,transparent 70%),
+ radial-gradient(1.6px 1.6px at 78% 12%,#E8D9B8 30%,transparent 70%),
+ radial-gradient(1.6px 1.6px at 32% 60%,#D9C5A0 30%,transparent 70%),
+ radial-gradient(1.4px 1.4px at 88% 72%,#E8D9B8 30%,transparent 70%),
+ radial-gradient(1.3px 1.3px at 56% 38%,#D9C5A0 30%,transparent 70%),
+ radial-gradient(1.3px 1.3px at 22% 84%,#E8D9B8 30%,transparent 70%),
+ radial-gradient(1.1px 1.1px at 66% 88%,#D9C5A0 30%,transparent 70%),
+ radial-gradient(1px 1px at 8% 48%,#D9C5A0 30%,transparent 70%),
+ radial-gradient(1px 1px at 92% 28%,#E8D9B8 30%,transparent 70%),
+ radial-gradient(1px 1px at 44% 8%,#E8D9B8 30%,transparent 70%);}
+#black{position:absolute;inset:0;z-index:99;background:#000;pointer-events:none;}
+#footmark{position:absolute;left:0;right:0;bottom:30px;z-index:80;text-align:center;font-family:var(--fd);font-size:17px;letter-spacing:.34em;color:var(--accent-dim);opacity:0;}
+
+/* player */
+#ui{position:absolute;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+#ui .msg{font-family:var(--fd);font-size:30px;letter-spacing:.3em;color:var(--accent);text-shadow:0 2px 18px rgba(0,0,0,.9);
+  border:1px solid var(--rule);padding:22px 44px;background:rgba(0,39,102,.72);}
+#bar{position:absolute;left:0;bottom:0;height:4px;width:0;background:var(--accent);z-index:201;opacity:0;}
+
+/* ── S1 CAPA ── */
+#s1 .marker{position:absolute;left:0;right:0;top:140px;text-align:center;font-family:var(--fd);font-size:24px;letter-spacing:.34em;color:var(--accent);z-index:6;}
+#s1 #titleGroup{position:absolute;left:0;right:0;top:0;height:1080px;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;will-change:transform;}
+#s1 .title{font-family:var(--fd);font-weight:400;font-size:128px;color:var(--fg-strong);white-space:nowrap;text-shadow:0 6px 30px rgba(0,0,0,.55);}
+#s1 .trule{height:1px;background:var(--accent);margin-top:26px;width:160px;}
+#s1 .poster{width:564px;height:486px;background:#000 center/cover no-repeat;
+  box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 0 1px var(--accent),0 0 0 14px rgba(0,39,102,.5);}
+#s1 .pwrap{position:absolute;left:50%;top:420px;margin-left:-282px;z-index:4;}
+#s1 .tag{position:absolute;left:0;right:0;top:352px;text-align:center;z-index:6;font-family:var(--fb);font-weight:600;font-size:21px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);}
+#s1 .yearlab{position:absolute;left:0;right:0;top:926px;text-align:center;z-index:6;font-family:var(--fb);font-weight:600;font-size:17px;letter-spacing:.36em;color:var(--fg);}
+#s1 .year{position:absolute;left:0;right:0;top:952px;text-align:center;z-index:6;font-family:var(--fd);font-size:74px;letter-spacing:.14em;color:var(--accent);text-shadow:0 4px 24px rgba(0,0,0,.65);}
+#s1 .credit{position:absolute;left:110px;bottom:56px;z-index:6;font-family:var(--fb);font-size:19px;line-height:1.5;color:var(--fg);}
+#s1 .date{position:absolute;right:110px;bottom:56px;z-index:6;font-family:var(--fd);font-size:21px;letter-spacing:.3em;color:var(--accent);}
+
+/* ── S2 ESPETÁCULO (split: texto à esquerda, foto inteira à direita) ── */
+#s2 .photo{position:absolute;right:0;top:0;bottom:0;width:780px;overflow:hidden;z-index:2;border-left:1px solid var(--rule);}
+#s2 .ph{position:absolute;inset:0;background:#000 center/cover no-repeat;will-change:transform;}
+#s2 .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,#0038A8 0%,rgba(0,56,168,0) 12%);z-index:2;}
+#s2 .photo::before{content:"";position:absolute;left:0;right:0;bottom:0;height:140px;background:linear-gradient(to top,rgba(0,0,0,.78) 0%,rgba(0,0,0,.4) 55%,transparent 100%);z-index:2;}
+#s2 .pcap{position:absolute;left:0;right:0;bottom:24px;text-align:center;z-index:3;font-family:var(--fd);font-size:19px;letter-spacing:.26em;color:var(--accent);text-shadow:0 2px 10px rgba(0,0,0,.95);}
+#s2 .col{position:absolute;left:110px;top:150px;width:900px;z-index:5;}
+#s2 .cred{font-family:var(--fb);font-size:22px;line-height:1.6;color:var(--fg);}
+#s2 .cred .k{font-family:var(--fd);font-size:18px;letter-spacing:.16em;color:var(--accent);margin-right:14px;}
+
+/* ── heropage genérica (S3,S4,S5,S6,S7) ── */
+.hp .scrim{background:linear-gradient(to bottom,rgba(0,0,0,.1) 0%,rgba(0,56,168,.55) 46%,rgba(0,56,168,.97) 78%,#0038A8 100%);z-index:2;}
+.hp .content{position:absolute;left:110px;right:110px;bottom:90px;z-index:5;}
+
+/* S5 ESG: imagem inteira (contain), quase sem degradê - só sombra neutra no rodapé p/ legibilidade */
+#s5 .bgimg{left:0;top:0;width:100%;height:100%;background-size:contain;background-position:center;}
+#s5 .scrim{background:linear-gradient(to top,rgba(16,9,7,.80) 0%,rgba(16,9,7,.34) 20%,rgba(0,0,0,0) 38%);}
+#s5 .panel{background:rgba(9,22,40,.72);padding:20px 26px;}
+#s5 .panel h3{font-size:29px;margin:8px 0 8px;}
+#s5 .panel p{font-size:18px;line-height:1.45;}
+
+/* ── S7 COTAS: vinil-galáxia inteiro como faixa superior, degradê mínimo só na borda ── */
+#s7 .band{position:absolute;top:0;left:0;right:0;height:540px;overflow:hidden;z-index:2;}
+#s7 .ph{position:absolute;inset:0;background:#000 center/cover no-repeat;will-change:transform;}
+#s7 .band::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0) 66%,rgba(0,56,168,.4) 88%,#0038A8 100%);}
+#s7 .content{bottom:auto;top:524px;}
+#s7 h2.hl{font-size:62px;}
+#s7 .sub{font-size:31px;}
+#s7 .cota{display:flex;align-items:baseline;gap:30px;border-bottom:1px solid var(--rule-soft);padding:11px 6px;}
+#s7 .cota .nm{font-family:var(--fd);font-size:35px;color:var(--accent);width:240px;}
+#s7 .cota .ds{font-family:var(--fb);font-size:21px;color:var(--fg);flex:1;}
+#s7 .cota .vl{font-family:var(--fd);font-size:25px;letter-spacing:.02em;color:var(--fg-strong);width:300px;text-align:right;white-space:nowrap;}
+#s7 .cota .vg{font-family:var(--fb);font-weight:700;font-size:19px;letter-spacing:.12em;color:var(--muted);width:150px;text-align:right;}
+#s7 .footband{font-size:19px;padding-top:14px;}
+
+/* ── S8 CREDIBILIDADE ── */
+#s8{background:var(--bg-deep);}
+#s8 .glow{position:absolute;inset:0;z-index:1;background:radial-gradient(60% 50% at 50% 38%,rgba(201,162,92,.16),transparent 70%);}
+#s8 .posts{position:absolute;left:0;right:0;top:252px;display:flex;justify-content:center;align-items:flex-start;gap:80px;z-index:5;perspective:1600px;}
+#s8 .post{will-change:transform,opacity;}
+#s8 .post img{height:436px;width:auto;display:block;border:1px solid var(--accent);box-shadow:0 26px 70px rgba(0,0,0,.65);}
+#s8 .post .cap{text-align:center;font-family:var(--fb);font-weight:600;font-size:17px;letter-spacing:.2em;color:var(--accent);margin-top:14px;text-transform:uppercase;}
+#s8 .q{position:absolute;left:0;right:0;bottom:118px;text-align:center;z-index:6;}
+
+/* ── S9 GALERIA ── */
+#s9{background:var(--bg-deep);}
+#s9 .gglow{position:absolute;inset:0;z-index:1;background:radial-gradient(58% 42% at 52% 36%,rgba(201,162,92,.14),transparent 70%);}
+#s9 .gp{position:absolute;background:#000 center/cover no-repeat;z-index:2;will-change:transform;
+  -webkit-mask-image:radial-gradient(ellipse 82% 82% at 50% 50%,#000 42%,transparent 86%);
+  mask-image:radial-gradient(ellipse 82% 82% at 50% 50%,#000 42%,transparent 86%);
+  filter:drop-shadow(0 14px 40px rgba(0,0,0,.55));}
+#s9 .verse{position:absolute;left:0;right:0;bottom:138px;text-align:center;z-index:6;}
+#s9 .vscrim{position:absolute;left:0;right:0;bottom:0;height:480px;z-index:5;background:linear-gradient(to top,rgba(0,39,102,.96) 18%,rgba(0,39,102,.55) 58%,transparent 100%);}
+
+/* ── S10 ENCERRAMENTO ── */
+#s10{background:var(--bg-deep);}
+#s10 .glow{position:absolute;inset:0;z-index:1;background:radial-gradient(55% 45% at 50% 30%,rgba(201,162,92,.13),transparent 72%);}
+#s10 .vinil{position:absolute;left:50%;top:56px;margin-left:-280px;width:560px;z-index:4;}
+#s10 .vinil img{width:100%;display:block;filter:drop-shadow(0 22px 60px rgba(0,0,0,.6));will-change:transform;}
+#s10 .blk{position:absolute;left:0;right:0;top:482px;text-align:center;z-index:6;}
+#s10 .contacts{position:absolute;left:50%;margin-left:-590px;top:762px;display:flex;gap:40px;z-index:6;width:1180px;}
+#s10 .cpanel{flex:1;background:rgba(15,42,74,.8);border-top:2px solid var(--accent);padding:20px 30px;text-align:left;}
+#s10 .cpanel .lbl{font-family:var(--fb);font-weight:700;font-size:16px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;}
+#s10 .cpanel h3{font-family:var(--fi);font-style:italic;font-size:30px;color:var(--fg-strong);margin:6px 0 6px;}
+#s10 .cpanel p{font-family:var(--fb);font-size:19px;line-height:1.45;color:var(--fg);}
+#s10 .foot{position:absolute;left:0;right:0;bottom:38px;display:flex;justify-content:center;align-items:center;gap:46px;z-index:6;}
+#s10 .foot img{display:block;}
+#s10 .foot .mid{font-family:var(--fb);font-weight:600;font-size:20px;letter-spacing:.12em;color:var(--accent);}
+</style>
+<style id="bb-override">
+.stat,.panel,#s10 .cpanel{background:var(--surface)!important;border-color:var(--on-yellow)!important;}
+.stat *,.panel *,#s10 .cpanel *{color:var(--on-yellow)!important;border-color:var(--on-yellow)!important;}
+.stat .lbl,.panel .lbl,#s10 .cpanel .lbl{color:#0038A8!important;}
+.footband{background:var(--surface)!important;border-color:var(--on-yellow)!important;color:var(--on-yellow)!important;padding:18px 26px!important;}
+.footband *{color:var(--on-yellow)!important;} .footband .sub2{color:#0038A8!important;}
+#s1 .bblogo{position:absolute;right:110px;top:60px;z-index:8;}
+#s1 .bblogo img{height:86px;width:auto;filter:drop-shadow(0 4px 14px rgba(0,8,26,.5));}
+#sbb1 .scrim{background:linear-gradient(to bottom,rgba(0,0,0,.10) 0%,rgba(0,39,102,.60) 44%,rgba(0,39,102,.97) 78%,#0038A8 100%);z-index:2;}
+#sbb2{background:var(--bg-deep);}
+#sbb2 .cglow{position:absolute;inset:0;z-index:1;background:radial-gradient(50% 38% at 50% 44%,rgba(40,90,180,.55),transparent 72%);}
+#sbb2 .ctitle{position:absolute;top:92px;left:110px;right:110px;z-index:7;font-family:var(--fd);font-size:60px;line-height:1.05;color:var(--accent);text-shadow:0 3px 16px rgba(0,8,26,.6);}
+#sbb2 .cf{position:absolute;background:#001a3d center/cover no-repeat;border:5px solid var(--accent);box-shadow:0 16px 40px rgba(0,8,26,.6);z-index:3;overflow:hidden;will-change:transform,opacity;}
+#sbb2 .cf .cap{position:absolute;left:0;right:0;bottom:0;padding:7px 0;text-align:center;font-family:var(--fb);font-weight:700;font-size:17px;letter-spacing:.14em;color:#001a3d;background:rgba(249,221,22,.92);text-transform:uppercase;}
+#sbb2 .cfoot{position:absolute;left:90px;right:90px;bottom:54px;z-index:8;background:var(--accent);border:2px solid var(--on-yellow);padding:16px 26px;}
+#sbb2 .cfoot .ttl{font-family:var(--fd);font-size:29px;letter-spacing:.04em;color:var(--on-yellow);line-height:1.12;}
+#sbb2 .cfoot .sub{display:block;font-family:var(--fb);font-size:18px;letter-spacing:.02em;color:#0038A8;margin-top:8px;line-height:1.45;font-weight:500;}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ════ S1 · CAPA ════ -->
+<section class="scene" id="s1">
+  <div class="bblogo" data-in="0.6" data-anim="fade" data-dur="1.0"><img src="assets/logo_bb.png" onerror="this.style.display='none'"></div>
+  <div class="marker" data-in="0.4" data-anim="fade" data-dur="1.2">PROPOSTA DE PATROCÍNIO · LEI ROUANET ART. 18</div>
+  <div id="titleGroup">
+    <div class="title" id="bigTitle">MINHA ESTRELA DALVA</div>
+    <div class="trule" id="trule"></div>
+  </div>
+  <div class="tag" data-in="4.2" data-anim="up" data-dur="0.9">UM PLANO DE PATROCÍNIO PARA <span style="color:var(--accent);">BANCO DO BRASIL E COLIGADAS</span></div>
+  <div class="pwrap" data-in="3.6" data-anim="up" data-dur="1.1">
+    <div class="poster" id="poster" style="background-image:url('assets/banner_dalva_capa.jpg');"></div>
+  </div>
+  <div class="yearlab" data-in="5.0" data-anim="fade" data-dur="0.8">FOCO DA CAPTAÇÃO</div>
+  <div class="year" data-in="5.2" data-anim="pop" data-dur="1.0">2027</div>
+  <div class="credit" data-in="5.8" data-anim="fade" data-dur="0.9">Renato Borghi Produções Artísticas Ltda.<br>em coprodução com Tablado Produções</div>
+  <div class="date" data-in="5.8" data-anim="fade" data-dur="0.9">TEMPORADAS 2027</div>
+</section>
+
+<!-- ════ S2 · O ESPETÁCULO ════ -->
+<section class="scene" id="s2">
+  <div class="photo">
+    <div class="ph" id="s2ph" style="background-image:url('assets/borghi_que_ama.jpeg');"></div>
+    <div class="pcap" data-in="2.2" data-anim="fade" data-dur="1.0">RENATO BORGHI · O FÃ E SUA DIVA</div>
+  </div>
+  <div class="kline"><span class="kicker" data-in="0.7" data-anim="fade" data-dur="0.9">O ESPETÁCULO · A OBRA</span><span class="kicker" data-in="0.7" data-anim="fade" data-dur="0.9">TEATRO DO SESI-SP</span></div>
+  <div class="col">
+    <div class="sub" data-in="1.0" data-anim="up" data-dur="1.0" style="font-size:52px;">A maior voz do rádio brasileiro, <span style="color:var(--accent);">em cena.</span></div>
+    <div class="lede" data-in="1.7" data-anim="up" data-dur="0.9" style="margin-top:34px;">Um musical sobre <strong>Dalva de Oliveira</strong>, escrito e protagonizado por <strong>Renato Borghi</strong>, um dos fundadores do Teatro Oficina.</div>
+    <div style="margin-top:40px;display:flex;flex-direction:column;gap:14px;">
+      <div class="cred" data-in="2.4" data-anim="left" data-dur="0.8"><span class="k">EM CENA</span>Renato Borghi, 89 · Soraya Ravenle, 63 · Ivan Vellame · Elcio Nogueira Seixas</div>
+      <div class="cred" data-in="2.7" data-anim="left" data-dur="0.8"><span class="k">CO-DIREÇÃO</span>Elias Andreato e Elcio Nogueira Seixas</div>
+      <div class="cred" data-in="3.0" data-anim="left" data-dur="0.8"><span class="k">DIREÇÃO MUSICAL</span>William Guedes</div>
+      <div class="cred" data-in="3.3" data-anim="left" data-dur="0.8"><span class="k">EM CARTAZ</span>desde 28/03/2026 · Teatro do SESI-SP · Av. Paulista</div>
+    </div>
+    <div data-in="4.4" data-anim="up" data-dur="1.0" style="margin-top:52px;border-left:2px solid var(--accent);padding-left:34px;">
+      <div class="quote" style="font-size:38px;">"Aquela voz não saiu mais da minha cabeça.<br>Foi o meu primeiro chamamento para a arte."</div>
+      <div class="att">RENATO BORGHI</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ S3 · RISCO ZERO ════ -->
+<section class="scene hp" id="s3">
+  <div class="bgimg" id="s3bg" style="background-image:url('assets/espetaculo_p03.jpg');"></div>
+  <div class="scrim"></div>
+  <div class="kline"><span class="kicker" data-in="0.7" data-anim="fade" data-dur="0.9">POR QUE AGORA · RISCO ZERO</span><span class="kicker" data-in="0.7" data-anim="fade" data-dur="0.9">TEATRO DO SESI-SP</span></div>
+  <div class="content">
+    <h2 class="hl" data-in="0.9" data-anim="up" data-dur="1.0">RISCO ZERO, <span class="gold">RETORNO AMPLIFICADO</span></h2>
+    <div class="sub" data-in="1.6" data-anim="up" data-dur="0.9" style="margin-top:16px;">- um espetáculo já em cartaz, não um projeto no papel.</div>
+    <div class="lede" data-in="2.2" data-anim="up" data-dur="0.9" style="margin-top:24px;max-width:1300px;">A estreia já aconteceu e está garantida por edital público: o patrocinador não financia a produção, <strong>amplifica um sucesso comprovado</strong>. A captação concentra-se nas novas temporadas Rio/SP e na turnê nacional de 2027.</div>
+    <div class="statrow" style="margin-top:44px;">
+      <div class="stat" data-in="3.0" data-anim="up" data-dur="0.9"><div class="lbl">Alcance</div><h3><span data-count="194" data-cin="3.2" data-cdur="2.2" data-format="int">0</span></h3><p>apresentações em 5 temporadas: SP, Rio e 10 capitais.</p></div>
+      <div class="stat" data-in="3.3" data-anim="up" data-dur="0.9"><div class="lbl">Público estimado</div><h3><span data-count="92200" data-cin="3.5" data-cdur="2.4" data-format="int">0</span></h3><p>espectadores ao longo de todo o ciclo.</p></div>
+      <div class="stat" data-in="3.6" data-anim="up" data-dur="0.9"><div class="lbl">Estreia garantida</div><h3>R$ <span data-count="2.2" data-cin="3.8" data-cdur="2.0" data-format="dec1">0</span> mi</h3><p>temporada SESI-SP já custeada por edital.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ S4 · LONGEVIDADE ════ -->
+<section class="scene hp" id="s4">
+  <div class="bgimg" id="s4bg" style="background-image:url('assets/espetaculo_p05.jpg');background-position:center 30%;"></div>
+  <div class="scrim"></div>
+  <div class="kline"><span class="kicker" data-in="0.7" data-anim="fade" data-dur="0.9">LONGEVIDADE · LEGADO DA MPB</span><span class="kicker" data-in="0.7" data-anim="fade" data-dur="0.9">BANCO DO BRASIL E COLIGADAS</span></div>
+  <div class="content">
+    <h2 class="hl" data-in="0.9" data-anim="up" data-dur="1.0">LONGEVIDADE EM CENA,<br><span class="gold">GERAÇÕES NA PLATEIA</span></h2>
+    <div class="sub" data-in="1.7" data-anim="up" data-dur="0.9" style="margin-top:16px;">- a vida que continua, no palco e diante dele.</div>
+    <div class="statrow" style="margin-top:42px;">
+      <div class="stat" data-in="2.4" data-anim="up" data-dur="0.9"><div class="lbl">Em cena</div><h3><span data-count="152" data-cin="2.6" data-cdur="2.2" data-format="int">0</span> anos</h3><p>Borghi (89) e Soraya (63) somados: longevidade que se mede no palco - há ato, não retórica.</p></div>
+      <div class="stat" data-in="2.7" data-anim="up" data-dur="0.9"><div class="lbl">Na plateia</div><h3 style="font-size:74px;white-space:nowrap;"><span data-count="3" data-cin="2.9" data-cdur="1.6" data-format="int">0</span> gerações</h3><p>Avós, filhos e netos juntos, sessão após sessão no SESI-SP.</p></div>
+      <div class="stat" data-in="3.0" data-anim="up" data-dur="0.9"><div class="lbl">Desde 1972</div><h3><span data-count="54" data-cin="3.2" data-cdur="2.0" data-format="int">0</span> anos</h3><p>Mais de meio século após sua partida, Dalva ainda lota o teatro - legado vivo da MPB que o Banco do Brasil ajuda a perpetuar.</p></div>
+    </div>
+    <div class="footband" data-in="4.6" data-anim="up" data-dur="0.9" style="margin-top:40px;">LONGEVIDADE QUE É LEGADO - A CONTINUIDADE DA MPB, DE DALVA AOS SEUS HERDEIROS<span class="sub2">o mesmo fio que liga o Banco do Brasil à música brasileira: memória que não envelhece e plateia que se renova a cada geração</span></div>
+  </div>
+</section>
+
+<!-- ════ S5 · ESG ════ -->
+<section class="scene hp" id="s5">
+  <div class="bgimg" id="s5bg" style="background-image:url('assets/espetaculo_p04.jpg');"></div>
+  <div class="scrim"></div>
+  <div class="kline"><span class="kicker" data-in="0.6" data-anim="fade" data-dur="0.9">IMPACTO ESG · MENSURÁVEL</span><span class="kicker" data-in="0.6" data-anim="fade" data-dur="0.9">GRI · SASB · CDP</span></div>
+  <div class="content">
+    <h2 class="hl" data-in="0.8" data-anim="up" data-dur="1.0">IMPACTO ESG <span class="gold">MENSURÁVEL</span></h2>
+    <div class="sub" data-in="1.4" data-anim="up" data-dur="0.9" style="margin-top:14px;">- indicadores prontos para o relatório de sustentabilidade.</div>
+    <div class="panel3" style="margin-top:40px;">
+      <div class="panel" data-in="2.1" data-anim="up" data-dur="0.9"><div class="lbl">S · Social</div><h3>Acesso e diversidade</h3><p><strong>33.520 ingressos gratuitos</strong> (36%). Libras e audiodescrição. Protagonista mulher e lideranças femininas. Oficinas para <strong>200 jovens</strong> de periferia.</p></div>
+      <div class="panel" data-in="2.45" data-anim="up" data-dur="0.9"><div class="lbl">E · Ambiental</div><h3>Produção sustentável</h3><p>Cenografia modular reutilizada, materiais recicláveis e figurinos de reuso. Meta de <strong>zero resíduo</strong> ao fim do ciclo.</p></div>
+      <div class="panel" data-in="2.8" data-anim="up" data-dur="0.9"><div class="lbl">G · Governança</div><h3>Transparência</h3><p>Prestação de contas via SALIC, auditoria independente e <strong>dois PRONACs</strong> publicados no DOU.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ SBB1 · POR QUE O BANCO DO BRASIL ════ -->
+<section class="scene hp" id="sbb1">
+  <div class="bgimg" id="sbb1bg" style="background-image:url('assets/espetaculo_p06.jpg');background-position:center 28%;"></div>
+  <div class="scrim"></div>
+  <div class="kline"><span class="kicker" data-in="0.6" data-anim="fade" data-dur="0.9">ADERÊNCIA · BANCO DO BRASIL E COLIGADAS</span><span class="kicker" data-in="0.6" data-anim="fade" data-dur="0.9">O MAIOR MECENAS DA MÚSICA</span></div>
+  <div class="content">
+    <h2 class="hl" data-in="0.9" data-anim="up" data-dur="1.0">POR QUE O <span class="gold">BANCO DO BRASIL</span></h2>
+    <div class="sub" data-in="1.5" data-anim="up" data-dur="0.9" style="margin-top:14px;">- o maior mecenas da música encontra a sua raiz.</div>
+    <div class="lede" data-in="2.1" data-anim="up" data-dur="0.9" style="margin-top:22px;max-width:1320px;">O Banco do Brasil e suas coligadas são, juntos, <strong>o maior mecenas da música brasileira</strong>. Minha Estrela Dalva é a raiz dessa música.</div>
+    <div class="statrow" style="margin-top:38px;">
+      <div class="stat" data-in="3.0" data-anim="up" data-dur="0.9"><div class="lbl">Mecenato musical</div><h3>R$ <span data-count="120" data-cin="3.2" data-cdur="2.0" data-format="int">0</span> mi</h3><p>investidos pelo Grupo BB na programação das cinco unidades do CCBB.</p></div>
+      <div class="stat" data-in="3.3" data-anim="up" data-dur="0.9"><div class="lbl">Turnês patrocinadas</div><h3 style="font-size:50px;">Gil · Caetano<br>Bethânia</h3><p>o BB levou aos palcos os herdeiros diretos de Dalva.</p></div>
+      <div class="stat" data-in="3.6" data-anim="up" data-dur="0.9"><div class="lbl">BB Seguros nos palcos</div><h3 style="font-size:50px;">Chico · Tom<br>Tim Maia</h3><p>homenagens aos nomes que Dalva ajudou a inventar.</p></div>
+    </div>
+    <div class="footband" data-in="4.7" data-anim="up" data-dur="0.9" style="margin-top:34px;">DOS HERDEIROS À RAIZ - O GRUPO BB ENCONTRA A MATRIZ DA MPB<span class="sub2">Dalva de Oliveira: a matriarca que ensinou o Brasil a cantar a própria emoção</span></div>
+  </div>
+</section>
+
+<!-- ════ SBB2 · A DALVA EM CASA: OS CCBBs EM 2027 ════ -->
+<section class="scene" id="sbb2">
+  <div class="cglow"></div>
+  <div class="kline"><span class="kicker" data-in="0.5" data-anim="fade" data-dur="0.9">ATIVAÇÃO PROPRIETÁRIA · A REDE CCBB EM 2027</span><span class="kicker" data-in="0.5" data-anim="fade" data-dur="0.9">BANCO DO BRASIL E COLIGADAS</span></div>
+  <h2 class="ctitle" data-in="0.8" data-anim="up" data-dur="1.0">A DALVA EM CASA: OS CCBBs EM 2027</h2>
+  <div class="cf" id="bf1" style="left:70px;top:250px;width:520px;height:330px;background-image:url('assets/ccbb_rio.jpg');"><span class="cap">Rio de Janeiro</span></div>
+  <div class="cf" id="bf2" style="left:560px;top:200px;width:560px;height:350px;background-image:url('assets/ccbb_sp.jpg');background-position:center 35%;z-index:5;"><span class="cap">São Paulo</span></div>
+  <div class="cf" id="bf3" style="left:1140px;top:250px;width:500px;height:320px;background-image:url('assets/ccbb_brasilia.jpg');"><span class="cap">Brasília</span></div>
+  <div class="cf" id="bf4" style="left:300px;top:560px;width:520px;height:300px;background-image:url('assets/ccbb_bh.jpg');z-index:4;"><span class="cap">Belo Horizonte</span></div>
+  <div class="cf" id="bf5" style="left:1000px;top:560px;width:540px;height:300px;background-image:url('assets/ccbb_salvador.jpg');z-index:4;"><span class="cap">Salvador</span></div>
+  <div class="cfoot" data-in="3.6" data-anim="up" data-dur="0.9"><div class="ttl">CINCO CAPITAIS, UMA REDE - A CIRCULAÇÃO 2027 NOS CCBBs<span class="sub">Rio, São Paulo, Brasília, Belo Horizonte e, pela primeira vez, Salvador - por patrocínio direto, com incentivo integral da Lei Rouanet (Art. 18).</span></div></div>
+</section>
+
+<!-- ════ S6 · PRONACs ════ -->
+<section class="scene hp" id="s6">
+  <div class="bgimg" id="s6bg" style="background-image:url('assets/dalva_veu.png');background-position:center 12%;"></div>
+  <div class="scrim" style="background:linear-gradient(to bottom,rgba(0,0,0,.15) 0%,rgba(0,56,168,.7) 40%,rgba(0,56,168,.98) 72%,#0038A8 100%);"></div>
+  <div class="kline"><span class="kicker" data-in="0.6" data-anim="fade" data-dur="0.9">O PROJETO · 5 TEMPORADAS · 2 PRONACs</span><span class="kicker" data-in="0.6" data-anim="fade" data-dur="0.9">BANCO DO BRASIL · CAPTAÇÃO 2027</span></div>
+  <div class="content">
+    <h2 class="hl" data-in="0.8" data-anim="up" data-dur="1.0">CINCO TEMPORADAS, <span class="gold">DOIS PRONACs</span></h2>
+    <div class="sub" data-in="1.4" data-anim="up" data-dur="0.9" style="margin-top:14px;">- da Paulista, hoje, para novas temporadas Rio/SP e turnê por 10 capitais.</div>
+    <div class="statrow" style="margin-top:40px;">
+      <div class="stat" data-in="2.1" data-anim="up" data-dur="0.9" style="padding:30px 36px;"><div class="lbl">PRONAC 236315 · Renato Borghi Produções</div><h3 style="font-size:66px;">R$ <span data-count="2925100.50" data-cin="2.3" data-cdur="2.4" data-format="brl">0</span></h3><p>Novas temporadas Rio/SP e Circulação Sul/Sudeste.</p></div>
+      <div class="stat" data-in="2.4" data-anim="up" data-dur="0.9" style="padding:30px 36px;"><div class="lbl">PRONAC 2514130 · Tablado Produções</div><h3 style="font-size:66px;">R$ <span data-count="3146952.75" data-cin="2.6" data-cdur="2.4" data-format="brl">0</span></h3><p>Turnê nacional por 10 capitais.</p></div>
+    </div>
+    <div class="footband" data-in="4.3" data-anim="up" data-dur="0.9" style="margin-top:38px;border-top:1px solid var(--rule);">
+      Total aprovado na Lei Rouanet: <span style="font-family:var(--fd);font-size:34px;letter-spacing:.04em;color:var(--fg-strong);margin-left:10px;">R$ <span data-count="6072053.25" data-cin="4.5" data-cdur="2.2" data-format="brl">0</span></span>
+      <span class="sub2">ART. 18 · MECENATO · 100% DEDUTÍVEL DO IRPJ (LUCRO REAL)</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════ S7 · COTAS ════ -->
+<section class="scene hp" id="s7">
+  <div class="band"><div class="ph" id="s7ph" style="background-image:url('assets/vinil_galaxias_dalva.jpg');"></div></div>
+  <div class="kline"><span class="kicker" data-in="0.6" data-anim="fade" data-dur="0.9">AS COTAS · QUATRO MODALIDADES</span><span class="kicker" data-in="0.6" data-anim="fade" data-dur="0.9">BANCO DO BRASIL · CAPTAÇÃO 2027</span></div>
+  <div class="content">
+    <h2 class="hl" data-in="0.8" data-anim="up" data-dur="1.0">AS COTAS DE <span class="gold">PATROCÍNIO</span></h2>
+    <div class="sub" data-in="1.3" data-anim="up" data-dur="0.8" style="margin-top:12px;">- quatro formas de investir, todas com custo líquido zero.</div>
+    <div style="margin-top:30px;">
+      <div class="cota" data-in="1.9" data-anim="left" data-dur="0.8"><div class="nm">MASTER</div><div class="ds">Apresentador - naming e todas as 194 apresentações</div><div class="vl">R$ ~6,1 mi</div><div class="vg">1 VAGA</div></div>
+      <div class="cota" data-in="2.2" data-anim="left" data-dur="0.8"><div class="nm">ESTRELA</div><div class="ds">Patrocinador - 1 PRONAC integral</div><div class="vl">R$ 2,9 ou 3,1 mi</div><div class="vg">2 VAGAS</div></div>
+      <div class="cota" data-in="2.5" data-anim="left" data-dur="0.8"><div class="nm">MUSA</div><div class="ds">Co-Patrocinador - metade de 1 PRONAC</div><div class="vl">R$ ~1,5 mi</div><div class="vg">4 VAGAS</div></div>
+      <div class="cota" data-in="2.8" data-anim="left" data-dur="0.8"><div class="nm">DIVA</div><div class="ds">Apoiador - um quarto de 1 PRONAC</div><div class="vl">R$ ~750 mil</div><div class="vg">8 VAGAS</div></div>
+    </div>
+    <div class="footband" data-in="3.8" data-anim="up" data-dur="0.9" style="margin-top:28px;">Custo líquido R$ 0,00 · dedução de até 4% do IR devido (Lucro Real) · Lei Rouanet Art. 18</div>
+  </div>
+</section>
+
+<!-- ════ S8 · CREDIBILIDADE ════ -->
+<section class="scene" id="s8">
+  <div class="glow"></div>
+  <div class="kline"><span class="kicker" data-in="0.6" data-anim="fade" data-dur="0.9">CREDIBILIDADE · VOZES SOBRE DALVA</span><span class="kicker" data-in="0.6" data-anim="fade" data-dur="0.9">@DALVAOMUSICAL</span></div>
+  <h2 class="hl" data-in="0.8" data-anim="up" data-dur="1.0" style="position:absolute;left:0;right:0;top:128px;text-align:center;font-size:72px;z-index:6;">QUEM JÁ <span class="gold">ABRAÇOU</span></h2>
+  <div class="posts">
+    <div class="post" id="p1"><img src="assets/bethania_post.png" alt=""><div class="cap">Maria Bethânia</div></div>
+    <div class="post" id="p2"><img src="assets/gil_post.png" alt=""><div class="cap">Gilberto Gil</div></div>
+    <div class="post" id="p3"><img src="assets/alcione_post.png" alt=""><div class="cap">Alcione</div></div>
+  </div>
+  <div class="q">
+    <div class="quote" data-in="3.4" data-anim="up" data-dur="1.0">"No Brasil só existiu um mito: Dalva de Oliveira. Intocável."</div>
+    <div class="att" data-in="4.0" data-anim="fade" data-dur="0.8">MARIA BETHÂNIA</div>
+    <div data-in="4.8" data-anim="fade" data-dur="0.9" style="margin-top:20px;font-family:var(--fb);font-size:19px;letter-spacing:.06em;color:var(--muted);">Endossos espontâneos também de Marieta Severo, Nany People, Paula Martins, Fafá de Belém e Vera Fischer</div>
+  </div>
+</section>
+
+<!-- ════ S9 · GALERIA ONÍRICA ════ -->
+<section class="scene" id="s9">
+  <div class="gglow"></div>
+  <div class="kline"><span class="kicker" data-in="0.5" data-anim="fade" data-dur="0.9">A OBRA EM IMAGENS</span><span class="kicker" data-in="0.5" data-anim="fade" data-dur="0.9">@DALVAOMUSICAL</span></div>
+  <div class="gp" id="g1" style="left:90px;top:130px;width:560px;height:370px;background-image:url('assets/espetaculo_g11.jpg');"></div>
+  <div class="gp" id="g2" style="left:690px;top:90px;width:640px;height:430px;background-image:url('assets/espetaculo_g12.jpg');z-index:4;"></div>
+  <div class="gp" id="g3" style="left:1370px;top:150px;width:480px;height:320px;background-image:url('assets/espetaculo_g04.jpg');"></div>
+  <div class="gp" id="g4" style="left:240px;top:480px;width:540px;height:360px;background-image:url('assets/espetaculo_g08.jpg');z-index:3;"></div>
+  <div class="gp" id="g5" style="left:1180px;top:470px;width:560px;height:370px;background-image:url('assets/espetaculo_g02.jpg');z-index:3;"></div>
+  <div class="vscrim"></div>
+  <div class="verse">
+    <div class="quote" data-in="1.6" data-anim="up" data-dur="1.1" style="font-size:52px;">Enquanto houver quem cante Dalva,<br>a estrela não se apaga.</div>
+    <div class="grule" data-in="2.6" data-anim="fade" data-dur="0.8" style="margin:26px auto 0;"></div>
+    <div class="att" data-in="3.0" data-anim="fade" data-dur="0.8">A MAIOR VOZ DO RÁDIO BRASILEIRO, EM CENA</div>
+  </div>
+</section>
+
+<!-- ════ S10 · ENCERRAMENTO ════ -->
+<section class="scene" id="s10">
+  <div class="glow"></div>
+  <div class="kline"><span class="kicker" data-in="0.5" data-anim="fade" data-dur="0.9">ENCERRAMENTO · VAMOS CONVERSAR</span><span class="kicker" data-in="0.5" data-anim="fade" data-dur="0.9">MINHA ESTRELA DALVA</span></div>
+  <div class="vinil" id="vinil"><img src="assets/elenco_sobre_vinil.png" alt=""></div>
+  <div class="blk">
+    <h2 class="hl" data-in="1.6" data-anim="up" data-dur="1.0" style="font-size:64px;">VAMOS ESCREVER<span class="gold" style="display:block;font-size:40px;margin-top:8px;font-family:var(--fi);font-style:italic;letter-spacing:.01em;">o próximo capítulo juntos.</span></h2>
+    <div class="lede" data-in="2.4" data-anim="up" data-dur="0.9" style="margin:18px auto 0;max-width:1240px;font-size:23px;">As cotas de patrocínio estão disponíveis. Podemos detalhar a cota e as contrapartidas que fizerem mais sentido assim que quiserem.</div>
+  </div>
+  <div class="contacts">
+    <div class="cpanel" data-in="3.2" data-anim="up" data-dur="0.9"><div class="lbl">Coordenação do Projeto</div><h3>Elcio Nogueira Seixas</h3><p>elcio.seixas@gmail.com<br>+55 11 99101-9241</p></div>
+    <div class="cpanel" data-in="3.5" data-anim="up" data-dur="0.9"><div class="lbl">Produção</div><h3>Lukas Cordeiro</h3><p>lukas.cordeiro2025@gmail.com<br>+55 98 99112-0205</p></div>
+  </div>
+  <div class="foot" data-in="4.4" data-anim="fade" data-dur="1.0">
+    <img src="assets/logo_borghi_oficial.jpg" alt="" style="max-height:64px;">
+    <div class="mid">patrocinedalvaomusical.framer.website · @dalvaomusical</div>
+    <img src="assets/logo_tablado.png" alt="" style="max-height:42px;">
+  </div>
+</section>
+
+<!-- ════ S11 · CODA: céu estrelado, sem degradê, morrendo em fade ════ -->
+<section class="scene" id="s11">
+  <div class="bgimg" id="s11bg" style="background-image:url('assets/espetaculo_p09.jpg');"></div>
+</section>
+
+<div id="stars"></div>
+<div id="footmark">MINHA ESTRELA DALVA · O MUSICAL</div>
+<div id="grain"></div>
+<div id="vig"></div>
+<div id="black"></div>
+<div id="ui"><div class="msg" id="uimsg">CLIQUE PARA INICIAR</div></div>
+<div id="bar"></div>
+</div>
+
+<script>
+/* ───────── motor de timeline determinístico ───────── */
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const rng=(t,t0,t1,e)=>{const p=clamp((t-t0)/(t1-t0),0,1);return e?e(p):p;};
+const eoc=p=>1-Math.pow(1-p,3);
+const eio=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+const eox=p=>p===1?1:1-Math.pow(2,-10*p);
+const eos=p=>Math.sin(p*Math.PI/2);
+
+const SC=[
+ {id:'s1',start:0,  end:10.6},
+ {id:'s2',start:10, end:18.6},
+ {id:'s3',start:18, end:27.6},
+ {id:'s4',start:27, end:36.6},
+ {id:'s5',start:36, end:43.6},
+ {id:'sbb1',start:43, end:52.6},
+ {id:'sbb2',start:52, end:60.6},
+ {id:'s6',start:60, end:68.6},
+ {id:'s7',start:68, end:74.6},
+ {id:'s8',start:74, end:81.6},
+ {id:'s9',start:81, end:87.6},
+ {id:'s10',start:87,end:97.6},
+ {id:'s11',start:97,end:105}
+];
+const TOTAL=105;
+SC.forEach(s=>{s.el=document.getElementById(s.id);
+  s.items=[...s.el.querySelectorAll('[data-in]')].map(n=>({n,t0:+n.dataset.in,d:+(n.dataset.dur||0.9),anim:n.dataset.anim||'up'}));
+  s.counts=[...s.el.querySelectorAll('[data-count]')].map(n=>({n,to:+n.dataset.count,t0:+n.dataset.cin,d:+(n.dataset.cdur||2),fmt:n.dataset.format||'int'}));
+});
+const fInt=new Intl.NumberFormat('pt-BR');
+const fBrl=new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+function fmt(v,k){if(k==='brl')return fBrl.format(v);if(k==='dec1')return v.toFixed(1).replace('.',',');return fInt.format(Math.round(v));}
+
+function applyItem(it,a){
+  const p=rng(a,it.t0,it.t0+it.d,eoc);
+  it.n.style.opacity=p;
+  if(it.anim==='up')it.n.style.transform=`translateY(${(1-p)*46}px)`;
+  else if(it.anim==='left')it.n.style.transform=`translateX(${(1-p)*-60}px)`;
+  else if(it.anim==='pop')it.n.style.transform=`scale(${0.86+0.14*p})`;
+  else it.n.style.transform='none';
+}
+function kb(el,a,D,s0,s1,x0,x1,y0,y1){const p=rng(a,0,D,eos);
+  el.style.transform=`translate(${x0+(x1-x0)*p}px,${y0+(y1-y0)*p}px) scale(${s0+(s1-s0)*p})`;}
+
+const fx={
+ s1(el,a,D){
+   const tg=el.querySelector('#titleGroup'),ti=el.querySelector('#bigTitle'),ru=el.querySelector('#trule');
+   const pin=rng(a,0.3,2.1,eoc);
+   ti.style.opacity=pin;
+   ti.style.letterSpacing=(0.5-0.36*pin)+'em';
+   ru.style.width=(180*rng(a,1.4,2.4,eoc))+'px';
+   const up=rng(a,3.2,4.6,eio);
+   tg.style.transform=`translateY(${-338*up}px) scale(${1-0.48*up})`;
+   const mk=el.querySelector('.marker');mk.style.transform=`translateY(${-46*up}px)`;
+   const po=el.querySelector('#poster');
+   /* zoom-out de revelação: começa nos rostos, termina mostrando o cartaz inteiro com todos os créditos */
+   const z=rng(a,3.8,10.2,eos);
+   po.style.backgroundSize=(150-50*z)+'%';
+   po.style.backgroundPosition=(28+22*z)+'% '+(35+15*z)+'%';
+ },
+ s2(el,a,D){kb(el.querySelector('#s2ph'),a,D,1.12,1.0,0,0,10,-6);},
+ s3(el,a,D){kb(el.querySelector('#s3bg'),a,D,1.05,1.16,0,-30,0,-22);},
+ s4(el,a,D){kb(el.querySelector('#s4bg'),a,D,1.16,1.05,-35,20,-15,5);},
+ s5(el,a,D){kb(el.querySelector('#s5bg'),a,D,1.08,1.0,0,0,0,0);},
+ s6(el,a,D){kb(el.querySelector('#s6bg'),a,D,1.12,1.04,20,-15,-12,6);},
+ s7(el,a,D){kb(el.querySelector('#s7ph'),a,D,1.10,1.0,26,0,0,0);},
+ s8(el,a,D){
+   [['#p1',0.9],['#p2',1.4],['#p3',1.9]].forEach(([q,t0],i)=>{
+     const n=el.querySelector(q),p=rng(a,t0,t0+1.2,eoc);
+     const fl=Math.sin((a*0.9)+i*2.1)*7;
+     n.style.opacity=p;
+     n.style.transform=`perspective(1600px) rotateY(${(1-p)*(i===1?0:(i===0?38:-38))}deg) translateY(${(1-p)*70+fl}px) scale(${0.92+0.08*p})`;
+   });
+ },
+ s9(el,a,D){
+   const g=[['#g1',-14,9,-0.030],['#g2',10,-13,0.022],['#g3',-9,12,-0.026],['#g4',12,10,0.028],['#g5',-11,-9,-0.024]];
+   g.forEach(([q,vx,vy,vr],i)=>{
+     const n=el.querySelector(q),p=rng(a,0.25+i*0.18,1.15+i*0.18,eoc);
+     n.style.opacity=p;
+     n.style.transform=`translate(${vx*a/D*10}px,${vy*a/D*10}px) rotate(${(i%2? -2.2:2.4)+vr*a*10}deg) scale(${0.94+0.06*p+0.025*a/D})`;
+   });
+ },
+ s10(el,a,D){
+   const w=el.querySelector('#vinil'),v=el.querySelector('#vinil img');
+   const p=rng(a,0.7,1.9,eoc);
+   w.style.opacity=p;
+   v.style.transform=`translateY(${(1-p)*54+Math.sin(a*0.7)*8}px) scale(${1+0.018*Math.sin(a*0.5)})`;
+ },
+ s11(el,a,D){kb(el.querySelector('#s11bg'),a,D,1.0,1.10,0,0,8,-22);},
+ sbb1(el,a,D){kb(el.querySelector('#sbb1bg'),a,D,1.10,1.02,0,-18,0,-10);},
+ sbb2(el,a,D){
+   const g=[['#bf1',-12,8,-0.022],['#bf2',10,-10,0.020],['#bf3',-9,11,-0.024],['#bf4',12,9,0.026],['#bf5',-10,-8,-0.020]];
+   g.forEach(([q,vx,vy,vr],i)=>{
+     const n=el.querySelector(q),p=rng(a,0.3+i*0.22,1.2+i*0.22,eoc);
+     n.style.opacity=p;
+     n.style.transform=`translate(${vx*a/D*10}px,${vy*a/D*10}px) rotate(${(i%2?-2.0:2.4)+vr*a*10}deg) scale(${0.92+0.06*p+0.02*a/D})`;
+   });
+ }
+};
+
+window.SEEK=function(t){
+  SC.forEach(s=>{
+    const vis=t>=s.start&&t<s.end+0.05;
+    s.el.style.visibility=vis?'visible':'hidden';
+    if(!vis){s.el.style.opacity=0;return;}
+    s.el.style.opacity=rng(t,s.start,s.start+0.65);
+    const a=t-s.start;
+    s.items.forEach(it=>applyItem(it,a));
+    s.counts.forEach(c=>{const p=rng(a,c.t0,c.t0+c.d,eox);c.n.textContent=fmt(c.to*p,c.fmt);});
+    if(fx[s.id])fx[s.id](s.el,a,s.end-s.start);
+  });
+  document.getElementById('footmark').style.opacity=(t>11&&t<96)?0.85*rng(t,11,12):(t>=96?0:0);
+  document.getElementById('stars').style.opacity=0.45+0.18*Math.sin(t*1.7)+0.08*Math.sin(t*4.3);
+  const bl=document.getElementById('black');
+  bl.style.opacity=t<0.8?1-rng(t,0,0.8,eoc):(t>TOTAL-2?rng(t,TOTAL-2,TOTAL,eio):0);
+};
+window.READY=true;
+SEEK(0);
+
+/* ───────── player em tempo real ───────── */
+const ui=document.getElementById('ui'),uimsg=document.getElementById('uimsg'),bar=document.getElementById('bar');
+let playing=false,t=0,last=null;
+function fit(){
+  const s=Math.min(innerWidth/1920,innerHeight/1080);
+  document.getElementById('stage').style.transform=`translate(-50%,-50%) scale(${s})`;
+}
+addEventListener('resize',fit);fit();
+function setUI(){
+  if(playing){ui.style.display='none';bar.style.opacity=0;}
+  else{
+    ui.style.display='flex';bar.style.opacity=1;
+    uimsg.textContent=t<=0?'CLIQUE PARA INICIAR':(t>=TOTAL?'CLIQUE PARA REPETIR':'PAUSADO · CLIQUE PARA CONTINUAR');
+  }
+  bar.style.width=(t/TOTAL*100)+'%';
+}
+function frame(now){
+  if(playing){
+    if(last!=null){t=Math.min(TOTAL,t+(now-last)/1000);SEEK(t);bar.style.width=(t/TOTAL*100)+'%';}
+    if(t>=TOTAL){playing=false;setUI();}
+  }
+  last=now;
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+function toggle(){
+  if(t>=TOTAL){t=0;SEEK(0);}
+  playing=!playing;setUI();
+}
+addEventListener('click',toggle);
+addEventListener('keydown',e=>{
+  if(e.code==='Space'){e.preventDefault();toggle();}
+  else if(e.key==='r'||e.key==='R'){t=0;SEEK(0);playing=true;setUI();}
+  else if(e.key==='ArrowRight'){t=clamp(t+5,0,TOTAL);SEEK(t);setUI();}
+  else if(e.key==='ArrowLeft'){t=clamp(t-5,0,TOTAL);SEEK(t);setUI();}
+});
+setUI();
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Thumbnail · Teaser BB · 1200x675</title>
+<!-- Thumbnail clicavel do teaser BANCO DO BRASIL. Base = capa do master (cover_bb.png, extraida em t=9.3).
+     Screenshot do #thumb via puppeteer (1200x675). Play-button amarelo BB + rotulo discreto. -->
+<style>
+@font-face{font-family:'Inter';font-style:normal;font-weight:600;src:url('design-system/fonts/inter-latin-600-normal.woff2') format('woff2');}
+:root{ --bbyellow:#F9DD16; --bbblue:#002766; }
+body{ margin:0; background:#111; display:flex; align-items:center; justify-content:center; min-height:100vh; }
+#thumb{ position:relative; width:1200px; height:675px; overflow:hidden; background:var(--bbblue); }
+#thumb .bgimg{ position:absolute; inset:0; background:#001a3d url('cover_bb.png') center center/cover no-repeat; }
+#thumb .scrim{ position:absolute; inset:0; background:radial-gradient(120% 100% at 50% 56%, rgba(0,15,40,0) 42%, rgba(0,12,32,.55) 100%); }
+#thumb .play{ position:absolute; left:50%; top:50%; margin:-66px 0 0 -66px; width:132px; height:132px; border-radius:50%;
+  border:3px solid var(--bbyellow); background:rgba(0,20,55,.55); box-shadow:0 12px 44px rgba(0,0,0,.55); }
+#thumb .play::after{ content:""; position:absolute; left:50%; top:50%; transform:translate(-36%,-50%);
+  border-left:46px solid var(--bbyellow); border-top:28px solid transparent; border-bottom:28px solid transparent; }
+#thumb .foot{ position:absolute; left:0; right:0; bottom:42px; text-align:center; font-family:'Inter',Arial,sans-serif; font-weight:600;
+  font-size:20px; letter-spacing:.24em; text-transform:uppercase; color:var(--bbyellow); text-shadow:0 2px 12px rgba(0,0,0,.75); }
+</style>
+</head>
+<body>
+<div id="thumb">
+  <div class="bgimg"></div>
+  <div class="scrim"></div>
+  <div class="play"></div>
+</div>
+</body>
+</html>
